@@ -9,14 +9,14 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $url = $request->get('url');
+        $html = $request->input('html');
 
-        $data = Browsershot::url($url)
-            ->addChromiumArguments([
-                'no-sandbox',
-                'disable-setuid-sandbox'
-            ])
-            ->pdf();
+        $data = Browsershot::html($html)
+             ->addChromiumArguments([
+                 'no-sandbox',
+                 'disable-setuid-sandbox'
+             ])
+             ->pdf();
 
         return response()->streamDownload(function () use ($data) {
             echo $data;
