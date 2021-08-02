@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Spatie\Browsershot\Browsershot;
+use iio\libmergepdf\Merger;
+use iio\libmergepdf\Pages;
 
 class HomeController extends Controller
 {
@@ -11,15 +13,22 @@ class HomeController extends Controller
     {
         $html = $request->input('html');
 
-        $data = Browsershot::html($html)
-             ->addChromiumArguments([
-                 'no-sandbox',
-                 'disable-setuid-sandbox'
-             ])
-             ->pdf();
+        $merger = new Merger;
+        foreach ($html as $content) {
+            $data = Browsershot::html($content)
+            ->addChromiumArguments([
+                'no-sandbox',
+                'disable-setuid-sandbox'
+            ])
+            ->pdf();
 
-        return response()->streamDownload(function () use ($data) {
-            echo $data;
+            $merger->addRaw($data);
+        }
+
+        $createdPdf = $merger->merge();
+
+        return response()->streamDownload(function () use ($createdPdf) {
+            echo $createdPdf;
         }, 'browsershot-'.date('YmdHis').'.pdf');
     }
 }
