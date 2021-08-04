@@ -1,13 +1,10 @@
-## Browsershot to PDF
+# Browsershot to PDF
 
 Receive url pages, make page screenshots, then render them as PDF. Supports rendering of multiple pages merged as a single PDF.
 
-### TODO
+## TODO
 - first prototype
 - update readme.md with proper documentation
-
-### Prerequisites
-- Docker
 
 ### Development
 1. Clone this repository.
@@ -22,7 +19,7 @@ docker run --rm \
 ```
 3. Build/run development container.
 ```shell
-    ./vendor/bin/sail up -d
+./vendor/bin/sail up -d
 ```
 4. Copy `.env.example` and name it `.env`
 ```shell
