@@ -11,16 +11,20 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $html = $request->input('html');
+        $type = $request->input('type');
+        $data = $request->input('data');
 
         $merger = new Merger;
-        foreach ($html as $content) {
-            $data = Browsershot::html($content)
-            ->addChromiumArguments([
+        foreach ($data as $datum) {
+            $rawPdf = $type === 'html'
+                ? Browsershot::html($content)
+                : Browsershot::pdf($content)
+
+            $rawPdf->addChromiumArguments([
                 'no-sandbox',
                 'disable-setuid-sandbox'
             ])
-            ->pdf();
+                ->pdf();
 
             $merger->addRaw($data);
         }
