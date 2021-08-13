@@ -17,7 +17,7 @@ class HomeController extends Controller
         $merger = new Merger;
 
         foreach ($data as $content) {
-            $data = $type === 'html' ? Browsershot::html($content)->addChromiumArguments([
+            $rawPdf = $type === 'html' ? Browsershot::html($content)->addChromiumArguments([
                 'no-sandbox',
                 'disable-setuid-sandbox'
             ])->pdf() : Browsershot::url($content)->addChromiumArguments([
@@ -25,7 +25,7 @@ class HomeController extends Controller
                 'disable-setuid-sandbox'
             ])->pdf();
 
-            $merger->addRaw($data);
+            $merger->addRaw($rawPdf);
         }
 
         $createdPdf = $merger->merge();
