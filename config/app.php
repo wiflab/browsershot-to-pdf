@@ -230,5 +230,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
+    'home_redirect' => env('HOME_REDIRECT')
 
 ];
