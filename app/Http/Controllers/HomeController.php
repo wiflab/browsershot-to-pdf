@@ -34,4 +34,9 @@ class HomeController extends Controller
             echo $createdPdf;
         }, 'browsershot-'.date('YmdHis').'.pdf');
     }
+
+    public function redirect()
+    {
+        return redirect(config('app.home_redirect'));
+    }
 }
