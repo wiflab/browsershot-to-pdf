@@ -17,13 +17,20 @@ class HomeController extends Controller
         $merger = new Merger;
 
         foreach ($data as $content) {
-            $rawPdf = $type === 'html' ? Browsershot::html($content)->addChromiumArguments([
-                'no-sandbox',
-                'disable-setuid-sandbox'
-            ])->pdf() : Browsershot::url($content)->addChromiumArguments([
-                'no-sandbox',
-                'disable-setuid-sandbox'
-            ])->pdf();
+            $rawPdf = $type === 'html' ? Browsershot::html($content)
+                                                    ->setNodeBinary(config('node_path'))
+                                                    ->setNpmBinary(config('npm_path'))
+                                                    ->addChromiumArguments([
+                                                        'no-sandbox',
+                                                        'disable-setuid-sandbox'
+                                                    ])->pdf() :
+                                        Browsershot::url($content)
+                                                    ->setNodeBinary(config('node_path'))
+                                                    ->setNpmBinary(config('npm_path'))
+                                                    ->addChromiumArguments([
+                                                        'no-sandbox',
+                                                        'disable-setuid-sandbox'
+                                                    ])->pdf();
 
             $merger->addRaw($rawPdf);
         }
