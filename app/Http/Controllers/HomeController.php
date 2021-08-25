@@ -23,7 +23,7 @@ class HomeController extends Controller
                 $rawPdf->setNodeBinary(config('node_path'));
             }
             if (config('npm_path')) {
-                $rawPdf->setNodeBinary(config('npm_path'));
+                $rawPdf->setNpmBinary(config('npm_path'));
             }
 
             $merger->addRaw($rawPdf->addChromiumArguments([
