@@ -11,6 +11,11 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
+        $request->validate([
+            'type' => 'required|in:html,url',
+            'data' => 'required|array',
+        ]);
+
         $type = $request->input('type');
         $data = $request->input('data');
 
