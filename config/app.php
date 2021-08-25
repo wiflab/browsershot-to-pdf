@@ -230,6 +230,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
-    'home_redirect' => env('HOME_REDIRECT')
+    'home_redirect' => env('HOME_REDIRECT'),
+    'node_path' => env('NODE_PATH'),
+    'npm_path' => env('NPM_PATH'),
 
 ];
