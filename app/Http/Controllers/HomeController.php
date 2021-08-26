@@ -24,11 +24,11 @@ class HomeController extends Controller
         foreach ($data as $content) {
             $rawPdf = ($type === 'html') ? Browsershot::html($content) : Browsershot::url($content);
 
-            if (config('node_path')) {
-                $rawPdf->setNodeBinary(config('node_path'));
+            if (config('app.node_path')) {
+                $rawPdf->setNodeBinary(config('app.node_path'));
             }
-            if (config('npm_path')) {
-                $rawPdf->setNpmBinary(config('npm_path'));
+            if (config('app.npm_path')) {
+                $rawPdf->setNpmBinary(config('app.npm_path'));
             }
 
             $merger->addRaw($rawPdf->addChromiumArguments([
