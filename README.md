@@ -1,10 +1,6 @@
 # Browsershot to PDF
 
-Receive url pages, make page screenshots, then render them as PDF. Supports rendering of multiple pages merged as a single PDF.
-
-## TODO
-- first prototype
-- update readme.md with proper documentation
+A self-hosted site that receives url pages, make screenshots, then render them as PDF. Supports rendering of multiple pages merged as a single PDF.
 
 ### Development
 1. Clone this repository.
