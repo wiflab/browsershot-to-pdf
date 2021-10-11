@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Spatie\Browsershot\Browsershot;
-use iio\libmergepdf\Merger;
-use iio\libmergepdf\Pages;
 
 class HomeController extends Controller
 {
@@ -19,8 +17,7 @@ class HomeController extends Controller
         $type = $request->input('type');
         $data = $request->input('data');
 
-        $merger = new Merger;
-
+        $files = [];
         foreach ($data as $content) {
             $rawPdf = ($type === 'html') ? Browsershot::html($content) : Browsershot::url($content);
 
@@ -31,17 +28,18 @@ class HomeController extends Controller
                 $rawPdf->setNpmBinary(config('app.npm_path'));
             }
 
-            $merger->addRaw($rawPdf->addChromiumArguments([
-                                'no-sandbox',
-                                'disable-setuid-sandbox'
-                            ])->pdf());
+            $temporaryFile = tempnam("/tmp", config('app.name'));
+            $rawPdf->addChromiumArguments([
+                'no-sandbox',
+                'disable-setuid-sandbox'
+            ])->savePdf($temporaryFile);
+            $files[] = $temporaryFile;
         }
 
-        $createdPdf = $merger->merge();
+        $temporaryFinalFile = tempnam("/tmp", config('app.name'));
+        exec('pdftk '.implode(' ', $files).' cat output '.$temporaryFinalFile);
 
-        return response()->streamDownload(function () use ($createdPdf) {
-            echo $createdPdf;
-        }, 'browsershot-'.date('YmdHis').'.pdf');
+        return response()->download($temporaryFinalFile, 'browsershot-'.date('YmdHis').'.pdf');
     }
 
     public function redirect()
