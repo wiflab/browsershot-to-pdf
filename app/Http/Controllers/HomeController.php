@@ -9,18 +9,23 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        \Log::info(json_encode($request->all()));
         $request->validate([
             'type' => 'required|in:html,url',
             'data' => 'required|array',
+            'format' => 'nullable|string',
         ]);
 
         $type = $request->input('type');
         $data = $request->input('data');
+        $format = $request->input('format');
 
         $files = [];
         foreach ($data as $content) {
-            $rawPdf = ($type === 'html') ? Browsershot::html($content) : Browsershot::url($content)->format('A4');
+            $rawPdf = ($type === 'html') ? Browsershot::html($content) : Browsershot::url($content);
+
+            if (! is_null($format)) {
+                $rawPdf = $rawPdf->format($format);
+            }
 
             if (config('app.node_path')) {
                 $rawPdf->setNodeBinary(config('app.node_path'));
