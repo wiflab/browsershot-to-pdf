@@ -9,6 +9,7 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
+        \Log::info(json_encode($request->all()));
         $request->validate([
             'type' => 'required|in:html,url',
             'data' => 'required|array',
@@ -19,7 +20,7 @@ class HomeController extends Controller
 
         $files = [];
         foreach ($data as $content) {
-            $rawPdf = ($type === 'html') ? Browsershot::html($content) : Browsershot::url($content);
+            $rawPdf = ($type === 'html') ? Browsershot::html($content) : Browsershot::url($content)->format('A4');
 
             if (config('app.node_path')) {
                 $rawPdf->setNodeBinary(config('app.node_path'));
