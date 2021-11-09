@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Browsershot\Browsershot;
+use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
@@ -51,5 +53,32 @@ class HomeController extends Controller
     public function redirect()
     {
         return redirect(config('app.home_redirect'));
+    }
+
+    public function saveImage(Request $request)
+    {
+        $request->validate([
+            'type' => 'required|in:html,url',
+            'data' => 'required',
+        ]);
+
+        $url = $request->input('data');
+        $image = [];
+
+        $rawPdf = Browsershot::url($url);
+
+        if (config('app.node_path')) {
+            $rawPdf->setNodeBinary(config('app.node_path'));
+        }
+        if (config('app.npm_path')) {
+            $rawPdf->setNpmBinary(config('app.npm_path'));
+        }
+
+        $image = $rawPdf->addChromiumArguments([
+            'no-sandbox',
+            'disable-setuid-sandbox'
+        ])->screenshot();
+
+        return $image;
     }
 }

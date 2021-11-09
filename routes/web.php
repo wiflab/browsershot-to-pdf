@@ -15,5 +15,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/', [HomeController::class, 'index']);
+Route::post('/images', [HomeController::class, 'saveImage']);
 
 Route::get('/', [HomeController::class, 'redirect']);
