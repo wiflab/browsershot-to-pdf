@@ -77,7 +77,8 @@ class HomeController extends Controller
         $image = $rawPdf->addChromiumArguments([
             'no-sandbox',
             'disable-setuid-sandbox'
-        ])->screenshot();
+        ])->windowSize(1920, 1080)
+          ->screenshot();
 
         return $image;
     }
