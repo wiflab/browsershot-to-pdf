@@ -14,11 +14,13 @@
         "spatie/browsershot": "^3.47"
     },
     "require-dev": {
+        "bamarni/composer-bin-plugin": "^1.4",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
+        "nunomaduro/larastan": "^1.0",
         "phpunit/phpunit": "^9.3.3"
     },
     "autoload": {
@@ -43,7 +45,17 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ]
+        ],
+        "post-install-cmd": [
+            "@composer bin all install --ansi"
+        ],
+        "post-update-cmd": [
+            "@composer bin all update --ansi"
+        ],
+        "bin": "echo 'bin not installed'",
+        "analyse": "vendor/bin/phpstan analyse",
+        "format": "vendor/bin/php-cs-fixer fix --allow-risky=yes",
+        "insights": "vendor/bin/phpinsights"
     },
     "extra": {
         "laravel": {

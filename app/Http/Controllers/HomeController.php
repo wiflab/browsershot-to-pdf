@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Spatie\Browsershot\Browsershot;
-use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
@@ -36,15 +34,15 @@ class HomeController extends Controller
                 $rawPdf->setNpmBinary(config('app.npm_path'));
             }
 
-            $temporaryFile = tempnam("/tmp", config('app.name'));
+            $temporaryFile = tempnam('/tmp', config('app.name'));
             $rawPdf->addChromiumArguments([
                 'no-sandbox',
-                'disable-setuid-sandbox'
+                'disable-setuid-sandbox',
             ])->savePdf($temporaryFile);
             $files[] = $temporaryFile;
         }
 
-        $temporaryFinalFile = tempnam("/tmp", config('app.name'));
+        $temporaryFinalFile = tempnam('/tmp', config('app.name'));
         exec('pdftk '.implode(' ', $files).' cat output '.$temporaryFinalFile);
 
         return response()->download($temporaryFinalFile, 'browsershot-'.date('YmdHis').'.pdf');
@@ -76,7 +74,7 @@ class HomeController extends Controller
 
         $image = $rawPdf->addChromiumArguments([
             'no-sandbox',
-            'disable-setuid-sandbox'
+            'disable-setuid-sandbox',
         ])->windowSize(1920, 1080)
           ->screenshot();
 
